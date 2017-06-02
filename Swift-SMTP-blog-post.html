@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Swift-SMTP-blog-post</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/swift-smtp-bird.png" alt="swift-smtp"></p>
+
+<p>In your application, there may be times where you want to send emails--a user requests a password change, alerting subscribed users that an item has been restocked, sending a newsletter, etc. Introducing <strong><a href="https://github.com/IBM-Swift/Swift-SMTP">Swift-SMTP</a></strong>, a Swift package that can be used for just that. It supports SSL connections, as well as local file, HTML, and data attachments. In this blog post we&#39;ll walk through a simple web server that uses <strong>Swift-SMTP</strong> to send emails. Let&#39;s get started!</p>
+
+<h2 id="toc_0">Getting Started</h2>
+
+<ul>
+<li><p>Clone the demo project: <code>git clone https://github.com/quanvo87/Swift-SMTP-Demo</code></p></li>
+<li><p><code>cd</code> into the new directory, and run <code>swift package generate-xcodeproj</code> (this will download dependencies and take a few minutes)</p></li>
+<li><p>Open the newly created project: <code>Swift-SMTP-Demo.xcodeproj</code></p></li>
+<li><p>Change the scheme to the second one (this has an executable), and hit <code>⌘+r</code> to start the server:</p></li>
+</ul>
+
+<p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/Screen-Shot-2017-05-30-at-4.13.30-PM.png" alt="change xcode scheme"></p>
+
+<ul>
+<li>Open a browser to <code>localhost:8080</code>. You should see the page below:</li>
+</ul>
+
+<p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/swift-smtp-demo-homepage.png" alt="demo homepage"></p>
+
+<p>Before this can work, we need to set up our credentials on the server side. Let&#39;s go back to the Xcode project.</p>
+
+<h2 id="toc_1">main.swift</h2>
+
+<p>Back in the Xcode project, everything happens in <code>main.swift</code>. It can be broken into two sections, <code>Swift-SMTP</code> and <code>Kitura</code>. We&#39;ll talk about <code>Swift-SMTP</code> first:</p>
+
+<h3 id="toc_2">Swift-SMTP</h3>
+
+<div><pre><code class="language-swift">// The SMTP server you are going to connect to
+let hostname = &quot;&quot;
+
+// The email you will be sending from
+let email = &quot;&quot;
+
+// The password to the email
+let password = &quot;&quot;</code></pre></div>
+
+<p>First we&#39;ll set some basic login info we&#39;ll need. The <code>hostname</code> will be something like <code>smtp.gmail.com</code>. A quick Google search should reveal any major SMTP server hostnames. We&#39;ll also need our login and password for the server.</p>
+
+<div><pre><code class="language-swift">// Init an SSL instance depending on OS
+#if os(Linux)
+let cert = root + &quot;/cert.pem&quot;
+let key = root + &quot;/key.pem&quot;
+let ssl = SSL(withCACertificateDirectory: nil,
+              usingCertificateFile: cert,
+              withKeyFile: key)
+#else
+let cert = root + &quot;/cert.pfx&quot;
+let certPassword = &quot;kitura&quot;
+let ssl = SSL(withChainFilePath: cert,
+              withPassword: certPassword)
+#endif</code></pre></div>
+
+<p>Many email servers require you to connect securely via TLS/SSL, like Gmail. So here we create an <code>SSL</code> configuration that we&#39;ll use to connect to our SMTP server. Because of current discrepencies between the native security libraries available on macOS and Linux, we must use different methods depending on the OS we are working on. This demo uses self-signed certificates--this <a href="https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/">blog post</a> details how I generated them.</p>
+
+<div><pre><code class="language-swift">// The handle to the SMTP server with your login info
+let smtp = SMTP(hostname: hostname,
+                email: email,
+                password: password,
+                ssl: ssl)</code></pre></div>
+
+<p>Finally we are able to create our <code>SMTP</code> handle. Simply plug in the login info we just created. This is how we&#39;ll securely login to our SMTP server and send out emails!</p>
+
+<blockquote>
+<p><em>If you know your server does not require an SSL connection, you can omit the <code>ssl</code> parameter.</em></p>
+
+<p><em>If you get an error later on in the demo, it could be because <strong>Swift-SMTP</strong> does not work with your SMTP server with default settings. Refer to <strong>Swift-SMTP</strong>&#39;s <a href="https://ibm-swift.github.io/Swift-SMTP/">documentation</a> for further customization options, such as choosing what port to connect on, or what authentication methods to use. You may also have to enable third party access to your SMTP server.</em></p>
+</blockquote>
+
+<div><pre><code class="language-swift">// The `User` object that will act as our sender
+let sender = User(name: &quot;Swift-SMTP Demo&quot;,
+                  email: email)</code></pre></div>
+
+<p>One last thing we want to do is create a sender <code>User</code>. More on this in the next section.</p>
+
+<h3 id="toc_3">Kitura</h3>
+
+<p>This demo server is built on the <a href="https://github.com/IBM-Swift/Kitura">Kitura</a> Swift web framework. Let&#39;s jump right in.</p>
+
+<div><pre><code class="language-swift">let router = Router()</code></pre></div>
+
+<p>We first create our router.</p>
+
+<div><pre><code class="language-swift">// Serve our static index.html
+router.all(&quot;/&quot;, middleware: StaticFileServer())</code></pre></div>
+
+<p>Here we serve our <code>index.html</code> at <code>/</code>. We&#39;ll go over <code>index.html</code> in the next section.</p>
+
+<div><pre><code class="language-swift">// Send an email on this route
+router.get(&quot;/send/:email&quot;) { req, res, _ in
+
+    // Get the email from the parameters (1)
+    let email = req.parameters[&quot;email&quot;] ?? &quot;&quot;
+
+    // Create a `User` object that will act as our receiver (2)
+    let receiver = User(email: email)
+
+    // Create the `Mail` object that will be sent (3)
+    let mail = Mail(from: sender,
+                    to: [receiver],
+                    subject: &quot;Swift-SMTP Test Email&quot;,
+                    text: &quot;Hello, world!&quot;)
+
+    // Send the mail object (4)
+    smtp.send(mail, completion: { (error) in
+        var message: String
+
+        // Set the appropriate response message (5)
+        if let error = error {
+            message = &quot;Send failed: &quot; + String(describing: error)
+        } else {
+            message = &quot;Email successfully sent! You should see it in your sent box.&quot;
+        }
+
+        // Send the response (6)
+        do {
+            try res.send(message).end()
+        } catch {
+            Log.error(&quot;\(error)&quot;)
+        }
+    })
+}</code></pre></div>
+
+<p>Where the magic happens. Upon hitting the <code>/send</code> route, this code will be executed:</p>
+
+<ol>
+<li>Pull the email address out of the URL parameters</li>
+<li>Create our receiver <code>User</code> with this email address</li>
+<li>Create the actual <code>Mail</code> object with the appropriate fields</li>
+<li>Use this <code>Mail</code> object to call <code>send(_:completion:)</code> on our <code>smtp</code> handle--an asynchronous call</li>
+<li>Once the function is complete, we check for any errors</li>
+<li>Then send the appropriate response back to the client</li>
+</ol>
+
+<h2 id="toc_4">index.html</h2>
+
+<p>Our server is now ready to serve content and send emails. The last piece is our static home page, located in <code>/public</code>:</p>
+
+<div><pre><code class="language-markup">...
+  function send() {
+    ...
+    var email = document.getElementById(&quot;emailTextBox&quot;).value;
+    ...
+    xhttp.open(&quot;GET&quot;, &quot;/send/&quot;.concat(email), true);
+    xhttp.send();
+    }
+...</code></pre></div>
+
+<p>These are the most important snippets of <code>index.html</code>. This is the function that gets called when a user clicks <code>Send</code>. Notice we build our URL to include the user&#39;s input email.</p>
+
+<h2 id="toc_5">Send The Email!</h2>
+
+<p>Restart your server now that the proper credentials are in. Refresh <code>localhost:8080</code> and try entering an email and clicking <code>Send</code>. I recommend sending to yourself, or a public inbox like <a href="https://www.mailinator.com/">Mailinator</a>, so you can confirm that everything worked.</p>
+
+<blockquote>
+<p><em>Some SMTP servers don&#39;t display mails sent like this in the sent box</em>.</p>
+</blockquote>
+
+<h3 id="toc_6">Debugging</h3>
+
+<p><strong>Swift-SMTP</strong> logs much of its work. By including <code>HeliumLogger.use()</code> in <code>main.swift</code>, we can view them in the Xcode console:</p>
+
+<p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/swift-smtp-demo-console.png" alt="swift-smtp-demo console"></p>
+
+<h2 id="toc_7">Conclusion</h2>
+
+<p><strong><a href="https://github.com/IBM-Swift/Swift-SMTP">Swift-SMTP</a></strong> is a Swift package that can be used to send emails to an SMTP server. This <a href="https://github.com/quanvo87/Swift-SMTP-Demo">demo</a> went over how to incorporate it in an application built on the <a href="https://github.com/IBM-Swift/Kitura">Kitura</a> framework and send a simple email through a secure SSL connection. You can refer to <strong>Swift-SMTP</strong>&#39;s <a href="https://ibm-swift.github.io/Swift-SMTP/">documentation</a> to learn about the different configuration options available as well as add attachments to your emails.</p>
+
+<p>We are always looking for ways to improve <strong>Swift-SMTP</strong>. If you have any questions or requests, head on over to the <a href="https://github.com/IBM-Swift/Swift-SMTP">repo</a> or our <a href="http://swift-at-ibm-slack.mybluemix.net">Slack team</a> and let us know.</p>
+
+<script async defer src="https://swift-at-ibm-slack.mybluemix.net/slackin.js?large"></script> 
+<a class="github-button" href="https://github.com/IBM-Swift/Kitura" data-style="mega" data-count-href="/IBM-Swift/Kitura/stargazers" data-count-api="/repos/IBM-Swift/Kitura#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star IBM-Swift/Kitura on GitHub">Star</a>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+
+</body>
+
+</html>
