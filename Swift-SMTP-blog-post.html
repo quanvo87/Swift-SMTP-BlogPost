@@ -330,7 +330,7 @@ kbd {
 
 <p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/swift-smtp-bird.png" alt="swift-smtp"></p>
 
-<p>In your application, there may be times where you want to send emails--a user requests a password change, alerting subscribed users that an item has been restocked, sending a newsletter, etc. Introducing <strong><a href="https://github.com/IBM-Swift/Swift-SMTP">Swift-SMTP</a></strong>, a Swift package that can be used for just that. It supports SSL connections, as well as local file, HTML, and data attachments. In this blog post we&#39;ll walk through a simple web server that uses <strong>Swift-SMTP</strong> to send emails. Let&#39;s get started!</p>
+<p>In your application, there may be many instances where you need to send out emails--a user requests a password change, an item has been restocked, periodic newsletters, etc. Introducing <strong><a href="https://github.com/IBM-Swift/Swift-SMTP">Swift-SMTP</a></strong>, a Swift package that can be used for just that. It supports SSL connections, as well as local file, HTML, and data attachments. In this blog post we&#39;ll walk through a simple web server that uses <strong>Swift-SMTP</strong> to send emails. Let&#39;s get started!</p>
 
 <h2 id="toc_0">Getting Started</h2>
 
@@ -338,7 +338,7 @@ kbd {
 <li><p>Clone the demo project: <code>git clone https://github.com/quanvo87/Swift-SMTP-Demo</code></p></li>
 <li><p><code>cd</code> into the new directory, and run <code>swift package generate-xcodeproj</code> (this will download dependencies and take a few minutes)</p></li>
 <li><p>Open the newly created project: <code>Swift-SMTP-Demo.xcodeproj</code></p></li>
-<li><p>Change the scheme to the second one (this has an executable), and hit <code>⌘+r</code> to start the server:</p></li>
+<li><p>Change the scheme to the second one (the one with the executable), and hit <code>⌘+r</code> to start the server:</p></li>
 </ul>
 
 <p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/Screen-Shot-2017-05-30-at-4.13.30-PM.png" alt="change xcode scheme"></p>
@@ -366,23 +366,23 @@ let email = &quot;&quot;
 // The password to the email
 let password = &quot;&quot;</code></pre></div>
 
-<p>First we&#39;ll set some basic login info we&#39;ll need. The <code>hostname</code> will be something like <code>smtp.gmail.com</code>. A quick Google search should reveal any major SMTP server hostnames. We&#39;ll also need our login and password for the server.</p>
+<p>First we&#39;ll set some basic login info. The <code>hostname</code> will be something like <code>smtp.gmail.com</code>. A quick Google search should reveal your SMTP server&#39;s hostname. We&#39;ll also need our login and password for the server.</p>
 
 <div><pre><code class="language-swift">// Init an SSL instance depending on OS
 #if os(Linux)
-let cert = root + &quot;/cert.pem&quot;
-let key = root + &quot;/key.pem&quot;
+let cert = dir + &quot;/cert.pem&quot;
+let key = dir + &quot;/key.pem&quot;
 let ssl = SSL(withCACertificateDirectory: nil,
               usingCertificateFile: cert,
               withKeyFile: key)
 #else
-let cert = root + &quot;/cert.pfx&quot;
+let cert = dir + &quot;/cert.pfx&quot;
 let certPassword = &quot;kitura&quot;
 let ssl = SSL(withChainFilePath: cert,
               withPassword: certPassword)
 #endif</code></pre></div>
 
-<p>Many email servers require you to connect securely via TLS/SSL, like Gmail. So here we create an <code>SSL</code> configuration that we&#39;ll use to connect to our SMTP server. Because of current discrepencies between the native security libraries available on macOS and Linux, we must use different methods depending on the OS we are working on. This demo uses self-signed certificates--this <a href="https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/">blog post</a> details how I generated them.</p>
+<p>Many email servers require you to connect securely via TLS/SSL. So here we create an <code>SSL</code> configuration that we&#39;ll use to connect to our SMTP server. Because of current discrepencies between the native security libraries available on macOS and Linux, we must use different methods depending on the OS we are working on. This demo uses self-signed certificates--this <a href="https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/">blog post</a> details how I generated them.</p>
 
 <div><pre><code class="language-swift">// The handle to the SMTP server with your login info
 let smtp = SMTP(hostname: hostname,
@@ -395,7 +395,9 @@ let smtp = SMTP(hostname: hostname,
 <blockquote>
 <p><em>If you know your server does not require an SSL connection, you can omit the <code>ssl</code> parameter.</em></p>
 
-<p><em>If you get an error later on in the demo, it could be because <strong>Swift-SMTP</strong> does not work with your SMTP server with default settings. Refer to <strong>Swift-SMTP</strong>&#39;s <a href="https://ibm-swift.github.io/Swift-SMTP/">documentation</a> for further customization options, such as choosing what port to connect on, or what authentication methods to use. You may also have to enable third party access to your SMTP server.</em></p>
+<p><em>If you get an error later on in the demo, it could be because <strong>Swift-SMTP</strong> does not work with your SMTP server with default settings. Refer to <strong>Swift-SMTP</strong>&#39;s <a href="https://ibm-swift.github.io/Swift-SMTP/">documentation</a> for further customization options, such as choosing what port to connect on, or what authentication methods to use. You may also have to allow less secure apps on your SMTP server:</em></p>
+
+<p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/06/Swift-SMTP-allow-less-secure-apps.png" alt="enable less secure apps"></p>
 </blockquote>
 
 <div><pre><code class="language-swift">// The `User` object that will act as our sender
@@ -460,7 +462,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
 <li>Create the actual <code>Mail</code> object with the appropriate fields</li>
 <li>Use this <code>Mail</code> object to call <code>send(_:completion:)</code> on our <code>smtp</code> handle--an asynchronous call</li>
 <li>Once the function is complete, we check for any errors</li>
-<li>Then send the appropriate response back to the client</li>
+<li>Send the appropriate response back to the client</li>
 </ol>
 
 <h2 id="toc_4">index.html</h2>
@@ -481,7 +483,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
 
 <h2 id="toc_5">Send The Email!</h2>
 
-<p>Restart your server now that the proper credentials are in. Refresh <code>localhost:8080</code> and try entering an email and clicking <code>Send</code>. I recommend sending to yourself, or a public inbox like <a href="https://www.mailinator.com/">Mailinator</a>, so you can confirm that everything worked.</p>
+<p>Restart your server now that the proper credentials are in (hit <code>⌘+r</code> again in Xcode). Refresh <code>localhost:8080</code> and try entering an email and clicking <code>Send</code>. I recommend sending to yourself, or a public inbox like <a href="https://www.mailinator.com/">Mailinator</a>, so you can confirm that everything worked.</p>
 
 <blockquote>
 <p><em>Some SMTP servers don&#39;t display mails sent like this in the sent box</em>.</p>
@@ -489,7 +491,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
 
 <h3 id="toc_6">Debugging</h3>
 
-<p><strong>Swift-SMTP</strong> logs much of its work. By including <code>HeliumLogger.use()</code> in <code>main.swift</code>, we can view them in the Xcode console:</p>
+<p><strong>Swift-SMTP</strong> logs much of its work. Since this demo utilizes <a href="https://github.com/IBM-Swift/HeliumLogger">HeliumLogger</a>, you can see this in the Xcode console:</p>
 
 <p><img src="https://developer.ibm.com/swift/wp-content/uploads/sites/69/2017/05/swift-smtp-demo-console.png" alt="swift-smtp-demo console"></p>
 
@@ -497,7 +499,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
 
 <p><strong><a href="https://github.com/IBM-Swift/Swift-SMTP">Swift-SMTP</a></strong> is a Swift package that can be used to send emails to an SMTP server. This <a href="https://github.com/quanvo87/Swift-SMTP-Demo">demo</a> went over how to incorporate it in an application built on the <a href="https://github.com/IBM-Swift/Kitura">Kitura</a> framework and send a simple email through a secure SSL connection. You can refer to <strong>Swift-SMTP</strong>&#39;s <a href="https://ibm-swift.github.io/Swift-SMTP/">documentation</a> to learn about the different configuration options available as well as add attachments to your emails.</p>
 
-<p>We are always looking for ways to improve <strong>Swift-SMTP</strong>. If you have any questions or requests, head on over to the <a href="https://github.com/IBM-Swift/Swift-SMTP">repo</a> or our <a href="http://swift-at-ibm-slack.mybluemix.net">Slack team</a> and let us know.</p>
+<p>We are always looking for ways to improve <strong>Swift-SMTP</strong>. If you have any questions or requests, head over to the <a href="https://github.com/IBM-Swift/Swift-SMTP">repo</a> or our <a href="http://swift-at-ibm-slack.mybluemix.net">Slack team</a> and let us know 💌.</p>
 
 <script async defer src="https://swift-at-ibm-slack.mybluemix.net/slackin.js?large"></script> 
 <a class="github-button" href="https://github.com/IBM-Swift/Kitura" data-style="mega" data-count-href="/IBM-Swift/Kitura/stargazers" data-count-api="/repos/IBM-Swift/Kitura#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star IBM-Swift/Kitura on GitHub">Star</a>
