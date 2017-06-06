@@ -53,7 +53,7 @@ let ssl = SSL(withChainFilePath: cert,
               withPassword: certPassword)
 #endif
 ```
-Many email servers require you to connect securely via TLS/SSL. So here we create an `SSL` configuration that we'll use to connect to our SMTP server. Because of current discrepencies between the native security libraries available on macOS and Linux, we must use different methods depending on the OS we are working on. This demo uses self-signed certificates--this [blog post](https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/) details how I generated them.
+Many email servers require you to connect securely via TLS/SSL. So here we create an `SSL` configuration to use to connect to our SMTP server. There are currently different security libraries on macOS and Linux, so you will need to use the right library based on your OS. This demo includes the code needed to run on both. This demo also uses self-signed certificates--this [blog post](https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/) details how I generated them.
 
 ```swift
 // The handle to the SMTP server with your login info
@@ -128,7 +128,7 @@ router.get("/send/:email") { req, res, _ in
     })
 }
 ```
-Where the magic happens. Upon hitting the `/send` route, this code will be executed:
+Upon hitting the `/send` route, this code will be executed:
 
 1. Pull the email address out of the URL parameters
 2. Create our receiver `User` with this email address
@@ -141,7 +141,7 @@ Where the magic happens. Upon hitting the `/send` route, this code will be execu
 
 Our server is now ready to serve content and send emails. The last piece is our static home page, located in `/public`:
 
-```html
+```javascript
 ...
   function send() {
 	...

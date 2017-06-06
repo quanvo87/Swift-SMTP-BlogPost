@@ -382,7 +382,7 @@ let ssl = SSL(withChainFilePath: cert,
               withPassword: certPassword)
 #endif</code></pre></div>
 
-<p>Many email servers require you to connect securely via TLS/SSL. So here we create an <code>SSL</code> configuration that we&#39;ll use to connect to our SMTP server. Because of current discrepencies between the native security libraries available on macOS and Linux, we must use different methods depending on the OS we are working on. This demo uses self-signed certificates--this <a href="https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/">blog post</a> details how I generated them.</p>
+<p>Many email servers require you to connect securely via TLS/SSL. So here we create an <code>SSL</code> configuration to use to connect to our SMTP server. There are currently different security libraries on macOS and Linux, so you will need to use the right library based on your OS. This demo includes the code needed to run on both. This demo also uses self-signed certificates--this <a href="https://developer.ibm.com/swift/2016/09/22/securing-kitura-part-1-enabling-ssltls-on-your-swift-server/">blog post</a> details how I generated them.</p>
 
 <div><pre><code class="language-swift">// The handle to the SMTP server with your login info
 let smtp = SMTP(hostname: hostname,
@@ -454,7 +454,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
     })
 }</code></pre></div>
 
-<p>Where the magic happens. Upon hitting the <code>/send</code> route, this code will be executed:</p>
+<p>Upon hitting the <code>/send</code> route, this code will be executed:</p>
 
 <ol>
 <li>Pull the email address out of the URL parameters</li>
@@ -469,7 +469,7 @@ router.get(&quot;/send/:email&quot;) { req, res, _ in
 
 <p>Our server is now ready to serve content and send emails. The last piece is our static home page, located in <code>/public</code>:</p>
 
-<div><pre><code class="language-markup">...
+<div><pre><code class="language-javascript">...
   function send() {
     ...
     var email = document.getElementById(&quot;emailTextBox&quot;).value;
